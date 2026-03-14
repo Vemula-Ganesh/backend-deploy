@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -19,9 +20,18 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'API is running' });
 });
 
-app.get('/', (req, res) => {
-    res.send('API is running...');
+// app.get('/', (req, res) => {
+//     res.send('API is running...');
+// });
+
+
+// Serve frontend
+app.use(express.static(path.join(__dirname, 'dist')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
